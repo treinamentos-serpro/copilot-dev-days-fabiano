@@ -1,5 +1,6 @@
 package com.socops.service;
 
+import com.socops.data.IcebreakerPrompts;
 import com.socops.model.BingoCell;
 import com.socops.model.WinningStreak;
 
@@ -109,6 +110,20 @@ class BoardAssemblerTests {
         final Optional<WinningStreak> result = BoardAssembler.detectWinningStreak(freshBoard);
         assertTrue(result.isEmpty(),
                 "No streak should be found on a brand-new board");
+    }
+
+    @Test
+    @DisplayName("Prompt catalog reflects a tech-life bingo theme")
+    void promptCatalogReflectsTechLifeTheme() {
+        final List<String> prompts = IcebreakerPrompts.ALL_PROMPTS;
+
+        assertEquals(24, prompts.size(), "A 5x5 board needs 24 prompt tiles");
+        assertTrue(prompts.stream().anyMatch(p -> p.toLowerCase().contains("code")),
+                "The catalog should include coding-related prompts");
+        assertTrue(prompts.stream().anyMatch(p -> p.toLowerCase().contains("remote")),
+                "The catalog should include work/life prompts relevant to tech teams");
+        assertTrue(prompts.stream().anyMatch(p -> p.toLowerCase().contains("setup")),
+                "The catalog should include everyday tech-life questions");
     }
 
     @Test
