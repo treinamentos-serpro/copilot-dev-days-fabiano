@@ -31,11 +31,11 @@ public final class BoardAssembler {
 
     /** Produce a fresh 25-cell board with shuffled prompts and a centre free cell. */
     public static List<BingoCell> assembleNewBoard() {
-        var shuffledPrompts = new ArrayList<>(IcebreakerPrompts.ALL_PROMPTS);
+        final var shuffledPrompts = new ArrayList<>(IcebreakerPrompts.ALL_PROMPTS);
         Collections.shuffle(shuffledPrompts);
-        List<String> chosenPrompts = shuffledPrompts.subList(0, 24);
+        final List<String> chosenPrompts = shuffledPrompts.subList(0, 24);
 
-        List<BingoCell> freshBoard = new ArrayList<>(25);
+        final List<BingoCell> freshBoard = new ArrayList<>(25);
         int promptCursor = 0;
 
         for (int slot = 0; slot < GRID_SIDE * GRID_SIDE; slot++) {
@@ -55,7 +55,7 @@ public final class BoardAssembler {
 
     /** Return a copy of the board with the given cell's selection toggled (free cells are immune). */
     public static List<BingoCell> flipCell(List<BingoCell> board, int cellId) {
-        List<BingoCell> updatedBoard = new ArrayList<>(board.size());
+        final List<BingoCell> updatedBoard = new ArrayList<>(board.size());
         for (BingoCell tile : board) {
             if (tile.id() == cellId && !tile.freeCell()) {
                 updatedBoard.add(new BingoCell(tile.id(), tile.prompt(), !tile.selected(), false));
@@ -75,7 +75,7 @@ public final class BoardAssembler {
 
         // Rows
         for (int row = 0; row < GRID_SIDE; row++) {
-            List<Integer> positions = positionsForRow(row);
+            final List<Integer> positions = positionsForRow(row);
             if (allSelected(board, positions)) {
                 return Optional.of(new WinningStreak("row", row, positions));
             }
@@ -83,14 +83,14 @@ public final class BoardAssembler {
 
         // Columns
         for (int col = 0; col < GRID_SIDE; col++) {
-            List<Integer> positions = positionsForColumn(col);
+            final List<Integer> positions = positionsForColumn(col);
             if (allSelected(board, positions)) {
                 return Optional.of(new WinningStreak("column", col, positions));
             }
         }
 
         // Main diagonal  (top-left → bottom-right)
-        List<Integer> diagMain = IntStream.range(0, GRID_SIDE)
+        final List<Integer> diagMain = IntStream.range(0, GRID_SIDE)
                 .map(i -> i * GRID_SIDE + i)
                 .boxed().toList();
         if (allSelected(board, diagMain)) {
@@ -98,7 +98,7 @@ public final class BoardAssembler {
         }
 
         // Anti-diagonal (top-right → bottom-left)
-        List<Integer> diagAnti = IntStream.range(0, GRID_SIDE)
+        final List<Integer> diagAnti = IntStream.range(0, GRID_SIDE)
                 .map(i -> i * GRID_SIDE + (GRID_SIDE - 1 - i))
                 .boxed().toList();
         if (allSelected(board, diagAnti)) {
